@@ -5,28 +5,314 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fodbold tilmelding</title>
 
-  <!-- Behold hele din CSS uændret her -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f4f7fb;
+      color: #1f2937;
+    }
+
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 30px;
+    }
+
+    h2 {
+      margin-top: 28px;
+      margin-bottom: 10px;
+      font-size: 20px;
+      color: #0b63ce;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    .intro {
+      background: #eef5ff;
+      border-left: 4px solid #0b63ce;
+      padding: 14px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    .payment-box {
+      background: #f8fafc;
+      border: 1px solid #dbe3ee;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    .payment-number {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 8px 0 14px 0;
+      letter-spacing: 1px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      box-sizing: border-box;
+      font-size: 16px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    button {
+      background: #0b63ce;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 22px;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #094ea3;
+    }
+
+    .copy-button {
+      background: #16a34a;
+      margin-top: 8px;
+    }
+
+    .copy-button:hover {
+      background: #15803d;
+    }
+
+    .copy-status {
+      display: none;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #166534;
+      font-weight: bold;
+    }
+
+    .status, .error {
+      display: none;
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+
+    .status {
+      background: #fff8e1;
+      border-left: 4px solid orange;
+    }
+
+    .error {
+      background: #fdeaea;
+      border-left: 4px solid red;
+    }
+
+    .small-note {
+      font-size: 14px;
+      color: #475569;
+      margin-top: 8px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 24px 0;
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal {
+      background: white;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+      text-align: center;
+    }
+
+    .modal h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 24px;
+      color: #0b63ce;
+    }
+
+    .modal p {
+      margin-bottom: 18px;
+      font-size: 17px;
+    }
+
+    .modal button {
+      margin-top: 0;
+    }
+
+    .send-button[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .sending-modal h3 {
+      color: #0b63ce;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .sending-modal p {
+      font-size: 18px;
+      margin-bottom: 0;
+    }
+
+    .spinner {
+      width: 46px;
+      height: 46px;
+      border: 5px solid #dbeafe;
+      border-top: 5px solid #0b63ce;
+      border-radius: 50%;
+      margin: 0 auto 18px auto;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Behold hele din HTML uændret, men ret input-felterne sådan her: -->
+  <div class="card">
+    <h1>IF Bjørn - Fodbold tilmelding</h1>
 
-  <input type="text" id="barnNavn" name="barnNavn" required>
-  <input type="date" id="fodselsdato" name="fodselsdato" required>
-  <input type="text" id="foralderNavn" name="foralderNavn" required>
-  <input type="email" id="email" name="email" required>
-  <input type="tel" id="telefon" name="telefon" required>
+    <div class="intro">
+      <strong>Velkommen til tilmelding.</strong><br>
+      Udfyld oplysningerne herunder for at tilmelde dit barn.<br>
+      Når tilmeldingen er sendt, kan betaling gennemføres via MobilePay.<br> 
+      Kontingentet er i år blevet hævet til 300kr, og dækker et helt år fra 1. april til 1. april. <br>
+      Hvis man har mere en 2 børn, spiller de resterende gratis, således man max. kan betale 600kr pr. familie. <br>
+      Hvis man allerede har indbetalt på gammel sats, så kan man bare indbetale det resterende sammen med denne registring. <br>
+      Registrering er nødvendig, da en stor del af vores tilskud fra kommunen, er afhængig af denne info. 
+    </div>
 
-  <select id="hold" name="hold" required>
-    <option value="">Vælg hold</option>
-    <option>Børnehave</option>
-    <option>Børnehaveklasse-1. klasse</option>
-    <option>2. klasse - 3. klasse</option>
-  </select>
+    <h2>Om holdene</h2>
+    <p>
+      Vi registrere jeres børn ud fra deres fødselsdato, men for overskuelighedes skyld, beder vi jer også, angive hvilket hold barnet starter på til 1.april 2026.
+    </p>
 
-  <textarea id="kommentar" name="kommentar" placeholder="Skriv evt. en kommentar her"></textarea>
+    <form id="tilmeldingForm">
+      <h2>Barnets oplysninger</h2>
 
-  <!-- Udskift KUN dit nederste <script>...</script> med dette: -->
+      <label for="barnNavn">Barnets fulde navn</label>
+      <input type="text" id="barnNavn" name="barnNavn" required>
+
+      <label for="fodselsdato">Fødselsdato</label>
+      <input type="date" id="fodselsdato" name="fodselsdato" required>
+
+      <h2>Forælder / kontaktperson</h2>
+
+      <label for="foralderNavn">Forælders navn</label>
+      <input type="text" id="foralderNavn" name="foralderNavn" required>
+
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="telefon">Telefonnummer</label>
+      <input type="tel" id="telefon" name="telefon" required>
+
+      <h2>Holdvalg</h2>
+
+      <label for="hold">Fodboldhold ved opstart april 2026</label>
+      <select id="hold" name="hold" required>
+        <option value="">Vælg hold</option>
+        <option>Børnehave</option>
+        <option>Børnehaveklasse-1. klasse</option>
+        <option>2. klasse - 3. klasse</option>
+      </select>
+
+      <label for="kommentar">Kommentar</label>
+      <textarea id="kommentar" name="kommentar" placeholder="Skriv evt. en kommentar her"></textarea>
+
+      <div class="divider"></div>
+
+      <h2>Betaling</h2>
+
+      <div class="payment-box">
+        <p><strong>Tilmeldingen er først endelig, når betaling er modtaget.</strong></p>
+        <p>Betal venligst til MobilePay på nummer:</p>
+
+        <div class="payment-number" id="mobilePayNummer">97575</div>
+
+        <button type="button" class="copy-button" id="copyButton">
+          Kopiér MobilePay-nummer
+        </button>
+
+        <div class="copy-status" id="copyStatus">MobilePay-nummer kopieret</div>
+
+        <p style="margin-top: 16px;">Beløb: <strong>300 kr for et år (2 sæsoner)</strong></p>
+
+        <div class="small-note">
+          Åbn derefter MobilePay og indsæt eller tast nummeret 97575.
+        </div>
+      </div>
+
+      <button type="submit" class="send-button" id="sendButton">Send tilmelding</button>
+    </form>
+
+    <div class="status" id="statusBoks">Sender...</div>
+    <div class="error" id="errorBoks"></div>
+  </div>
+
+  <div class="modal-backdrop" id="sendingModal">
+    <div class="modal sending-modal">
+      <div class="spinner"></div>
+      <h3>Sender...</h3>
+      <p>Vent venligst. Luk ikke siden endnu.</p>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="successModal">
+    <div class="modal">
+      <h3>Tilmelding modtaget</h3>
+      <p>Din tilmelding er registreret.</p>
+      <p>Husk at indbetale <strong>300 kr</strong> via MobilePay til <strong>97575</strong>.</p>
+      <button type="button" id="okButton">OK</button>
+    </div>
+  </div>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzfqV2Qtcnru1rb2xQ_k1v3Gka6T7QAVGmrudvWIcPPngKzZa98eZYE37twTdMp69Ei/exec";

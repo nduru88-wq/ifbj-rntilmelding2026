@@ -1,206 +1,116 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fodbold tilmelding</title>
 
-<title>Tilmelding</title>
-
-<style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f3f4f6;
-    padding:20px;
-}
-
-.card{
-    max-width:650px;
-    margin:auto;
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.12);
-}
-
-h1{
-    text-align:center;
-    margin-top:0;
-}
-
-label{
-    display:block;
-    margin-top:15px;
-    font-weight:bold;
-}
-
-input,
-textarea{
-    width:100%;
-    padding:14px;
-    margin-top:6px;
-    box-sizing:border-box;
-    border:1px solid #ccc;
-    border-radius:10px;
-    font-size:16px;
-}
-
-button{
-    width:100%;
-    margin-top:25px;
-    padding:18px;
-    border:none;
-    border-radius:12px;
-    background:#2e7d32;
-    color:white;
-    font-size:20px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-button:disabled{
-    opacity:0.6;
-}
-
-.overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.7);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-}
-
-.popup{
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    text-align:center;
-    width:90%;
-    max-width:400px;
-}
-
-.spinner{
-    width:50px;
-    height:50px;
-    border:6px solid #ddd;
-    border-top:6px solid #2e7d32;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin:auto;
-}
-
-@keyframes spin{
-to{
-transform:rotate(360deg);
-}
-}
-
-#success{
-display:none;
-margin-top:20px;
-padding:15px;
-background:#e8f5e9;
-border-radius:12px;
-text-align:center;
-font-weight:bold;
-color:#1b5e20;
-}
-</style>
-
+  <!-- Behold hele din CSS uændret her -->
 </head>
+
 <body>
+  <!-- Behold hele din HTML uændret, men ret input-felterne sådan her: -->
 
-<div class="card">
+  <input type="text" id="barnNavn" name="barnNavn" required>
+  <input type="date" id="fodselsdato" name="fodselsdato" required>
+  <input type="text" id="foralderNavn" name="foralderNavn" required>
+  <input type="email" id="email" name="email" required>
+  <input type="tel" id="telefon" name="telefon" required>
 
-<h1>Tilmelding</h1>
+  <select id="hold" name="hold" required>
+    <option value="">Vælg hold</option>
+    <option>Børnehave</option>
+    <option>Børnehaveklasse-1. klasse</option>
+    <option>2. klasse - 3. klasse</option>
+  </select>
 
-<form id="myForm">
+  <textarea id="kommentar" name="kommentar" placeholder="Skriv evt. en kommentar her"></textarea>
 
-<label>Navn</label>
-<input name="navn" required>
+  <!-- Udskift KUN dit nederste <script>...</script> med dette: -->
 
-<label>Telefon</label>
-<input name="telefon">
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzfqV2Qtcnru1rb2xQ_k1v3Gka6T7QAVGmrudvWIcPPngKzZa98eZYE37twTdMp69Ei/exec";
 
-<label>Email</label>
-<input name="email" type="email">
+    const form = document.getElementById("tilmeldingForm");
+    const errorBoks = document.getElementById("errorBoks");
+    const statusBoks = document.getElementById("statusBoks");
+    const copyButton = document.getElementById("copyButton");
+    const copyStatus = document.getElementById("copyStatus");
+    const sendButton = document.getElementById("sendButton");
+    const successModal = document.getElementById("successModal");
+    const sendingModal = document.getElementById("sendingModal");
+    const okButton = document.getElementById("okButton");
 
-<label>Besked</label>
-<textarea name="besked"></textarea>
+    copyButton.addEventListener("click", async function () {
+      try {
+        await navigator.clipboard.writeText("97575");
+        copyStatus.style.display = "block";
+        copyStatus.textContent = "MobilePay-nummer kopieret";
+        setTimeout(() => {
+          copyStatus.style.display = "none";
+        }, 2500);
+      } catch (err) {
+        copyStatus.style.display = "block";
+        copyStatus.textContent = "Kunne ikke kopiere automatisk. Nummeret er: 97575";
+      }
+    });
 
-<button type="submit">
-Send tilmelding
-</button>
+    function visModal() {
+      successModal.style.display = "flex";
+    }
 
-</form>
+    function skjulModal() {
+      successModal.style.display = "none";
+    }
 
-<div id="success">
-Tak 😊 Din tilmelding er sendt.
-</div>
+    function visSenderModal() {
+      sendingModal.style.display = "flex";
+    }
 
-</div>
+    function skjulSenderModal() {
+      sendingModal.style.display = "none";
+    }
 
-<div class="overlay" id="overlay">
-<div class="popup">
+    okButton.addEventListener("click", function () {
+      skjulModal();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
-<div class="spinner"></div>
+    successModal.addEventListener("click", function (e) {
+      if (e.target === successModal) {
+        skjulModal();
+      }
+    });
 
-<h2>Sender...</h2>
+    form.addEventListener("submit", async function(e) {
+      e.preventDefault();
 
-<p>
-Vent venligst mens tilmeldingen sendes.
-Luk ikke siden.
-</p>
+      errorBoks.style.display = "none";
+      statusBoks.style.display = "none";
+      sendButton.disabled = true;
+      visSenderModal();
 
-</div>
-</div>
+      const formData = new FormData(form);
 
-<script>
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: formData,
+          mode: "no-cors"
+        });
 
-const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbzfqV2Qtcnru1rb2xQ_k1v3Gka6T7QAVGmrudvWIcPPngKzZa98eZYE37twTdMp69Ei/exec";
+        skjulSenderModal();
+        sendButton.disabled = false;
+        form.reset();
+        visModal();
 
-const form=document.getElementById("myForm");
-
-form.addEventListener("submit",async(e)=>{
-
-e.preventDefault();
-
-document.getElementById("overlay").style.display="flex";
-
-const data=new FormData(form);
-
-try{
-
-await fetch(
-SCRIPT_URL,
-{
-method:"POST",
-body:data,
-mode:"no-cors"
-}
-);
-
-document.getElementById("overlay").style.display="none";
-
-document.getElementById("success").style.display="block";
-
-form.reset();
-
-}
-catch(err){
-
-document.getElementById("overlay").style.display="none";
-
-alert("Fejl ved afsendelse");
-
-}
-
-});
-
-</script>
-
+      } catch (error) {
+        skjulSenderModal();
+        sendButton.disabled = false;
+        errorBoks.style.display = "block";
+        errorBoks.textContent = "Der opstod en fejl ved afsendelse. Prøv igen.";
+      }
+    });
+  </script>
 </body>
 </html>

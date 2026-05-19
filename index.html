@@ -1,473 +1,318 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fodbold tilmelding</title>
 
-<title>Fodbold tilmelding</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f4f7fb;
+      color: #1f2937;
+    }
 
-<style>
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
 
-body{
-font-family:Arial,sans-serif;
-max-width:760px;
-margin:0 auto;
-padding:20px;
-background:#f4f7fb;
-color:#1f2937;
-}
+    h1 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 30px;
+    }
 
-.card{
-background:white;
-padding:24px;
-border-radius:16px;
-box-shadow:0 6px 18px rgba(0,0,0,0.08);
-}
+    h2 {
+      margin-top: 28px;
+      margin-bottom: 10px;
+      font-size: 20px;
+      color: #0b63ce;
+    }
 
-h1{
-margin-top:0;
-margin-bottom:10px;
-font-size:30px;
-}
+    p {
+      line-height: 1.5;
+    }
 
-h2{
-margin-top:28px;
-margin-bottom:10px;
-font-size:20px;
-color:#0b63ce;
-}
+    .intro {
+      background: #eef5ff;
+      border-left: 4px solid #0b63ce;
+      padding: 14px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
 
-p{
-line-height:1.5;
-}
+    .payment-box {
+      background: #f8fafc;
+      border: 1px solid #dbe3ee;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
 
-.intro{
-background:#eef5ff;
-border-left:4px solid #0b63ce;
-padding:14px;
-margin-bottom:20px;
-border-radius:8px;
-}
+    .payment-number {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 8px 0 14px 0;
+      letter-spacing: 1px;
+    }
 
-.payment-box{
-background:#f8fafc;
-border:1px solid #dbe3ee;
-padding:16px;
-border-radius:12px;
-margin-top:12px;
-}
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+    }
 
-.payment-number{
-font-size:28px;
-font-weight:bold;
-margin:8px 0 14px 0;
-letter-spacing:1px;
-}
+    input, select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
 
-label{
-display:block;
-margin-top:14px;
-font-weight:bold;
-}
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
 
-input,
-select,
-textarea,
-button{
-width:100%;
-padding:12px;
-margin-top:6px;
-border:1px solid #cbd5e1;
-border-radius:10px;
-box-sizing:border-box;
-font-size:16px;
-}
+    button {
+      background: #0b63ce;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 22px;
+      font-weight: bold;
+    }
 
-textarea{
-min-height:90px;
-resize:vertical;
-}
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
 
-button{
-background:#0b63ce;
-color:white;
-border:none;
-cursor:pointer;
-margin-top:22px;
-font-weight:bold;
-}
+    .copy-button {
+      background: #16a34a;
+      margin-top: 8px;
+    }
 
-.copy-button{
-background:#16a34a;
-margin-top:8px;
-}
+    .copy-status {
+      display: none;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #166534;
+      font-weight: bold;
+    }
 
-.copy-status{
-display:none;
-margin-top:10px;
-font-size:14px;
-color:#166534;
-font-weight:bold;
-}
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-.modal-backdrop{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.45);
-z-index:9999;
-align-items:center;
-justify-content:center;
-padding:20px;
-}
+    .modal {
+      background: white;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+    }
 
-.modal{
-background:white;
-width:100%;
-max-width:420px;
-border-radius:16px;
-padding:24px;
-text-align:center;
-}
+    .spinner {
+      width: 46px;
+      height: 46px;
+      border: 5px solid #dbeafe;
+      border-top: 5px solid #0b63ce;
+      border-radius: 50%;
+      margin: 0 auto 18px auto;
+      animation: spin 1s linear infinite;
+    }
 
-.spinner{
-width:46px;
-height:46px;
-border:5px solid #dbeafe;
-border-top:5px solid #0b63ce;
-border-radius:50%;
-margin:0 auto 18px auto;
-animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-from{
-transform:rotate(0deg);
-}
-to{
-transform:rotate(360deg);
-}
-}
-
-</style>
-
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="card">
+  <h1>IF Bjørn - Fodbold tilmelding</h1>
 
-<h1>
-IF Bjørn - Fodbold tilmelding
-</h1>
+  <div class="intro">
+    <strong>Velkommen til tilmelding.</strong><br>
+    Udfyld oplysningerne herunder for at tilmelde dit barn.<br>
+    Når tilmeldingen er sendt, kan betaling gennemføres via MobilePay.<br>
+    Kontingentet er i år blevet hævet til 300 kr og dækker et helt år fra 1. april til 1. april.<br>
+    Hvis man har mere end 2 børn, spiller de resterende gratis, således man max. kan betale 600 kr pr. familie.<br>
+    Hvis man allerede har indbetalt på gammel sats, kan man bare indbetale det resterende sammen med denne registrering.<br>
+    Registrering er nødvendig, da en stor del af vores tilskud fra kommunen er afhængig af denne info.
+  </div>
 
-<div class="intro">
+  <h2>Om holdene</h2>
+  <p>
+    Vi registrerer jeres børn ud fra deres fødselsdato, men for overskuelighedens skyld beder vi jer også angive,
+    hvilket hold barnet starter på til 1. april 2026.
+  </p>
 
-<strong>
-Velkommen til tilmelding
-</strong>
+  <form id="tilmeldingForm">
+    <h2>Barnets oplysninger</h2>
 
-<br><br>
+    <label for="barnNavn">Barnets fulde navn</label>
+    <input type="text" id="barnNavn" required>
 
-Kontingent:
+    <label for="fodselsdato">Fødselsdato</label>
+    <input type="date" id="fodselsdato" required>
 
-300 kr pr år.
+    <h2>Forælder / kontaktperson</h2>
 
+    <label for="foralderNavn">Forælders navn</label>
+    <input type="text" id="foralderNavn" required>
+
+    <label for="email">E-mail</label>
+    <input type="email" id="email" required>
+
+    <label for="telefon">Telefonnummer</label>
+    <input type="tel" id="telefon" required>
+
+    <h2>Holdvalg</h2>
+
+    <label for="hold">Fodboldhold ved opstart april 2026</label>
+    <select id="hold" required>
+      <option value="">Vælg hold</option>
+      <option>Børnehave</option>
+      <option>Børnehaveklasse-1. klasse</option>
+      <option>2. klasse - 3. klasse</option>
+    </select>
+
+    <label for="kommentar">Kommentar</label>
+    <textarea id="kommentar" placeholder="Skriv evt. en kommentar her"></textarea>
+
+    <h2>Betaling</h2>
+
+    <div class="payment-box">
+      <p><strong>Tilmeldingen er først endelig, når betaling er modtaget.</strong></p>
+      <p>Betal venligst til MobilePay på nummer:</p>
+
+      <div class="payment-number">97575</div>
+
+      <button type="button" class="copy-button" id="copyButton">
+        Kopiér MobilePay-nummer
+      </button>
+
+      <div class="copy-status" id="copyStatus">
+        MobilePay-nummer kopieret
+      </div>
+
+      <p style="margin-top:16px;">Beløb: <strong>300 kr</strong></p>
+      <p>Åbn derefter MobilePay og indsæt eller tast nummeret 97575.</p>
+    </div>
+
+    <button type="submit" id="sendButton">Send tilmelding</button>
+  </form>
 </div>
 
-<form id="tilmeldingForm">
-
-<h2>
-Barnets oplysninger
-</h2>
-
-<label>
-Barnets fulde navn
-</label>
-
-<input
-id="barnNavn"
-required>
-
-<label>
-Fødselsdato
-</label>
-
-<input
-type="date"
-id="fodselsdato"
-required>
-
-<h2>
-Forælder
-</h2>
-
-<label>
-Forælders navn
-</label>
-
-<input
-id="foralderNavn"
-required>
-
-<label>
-E-mail
-</label>
-
-<input
-type="email"
-id="email"
-required>
-
-<label>
-Telefon
-</label>
-
-<input
-id="telefon"
-required>
-
-<h2>
-Hold
-</h2>
-
-<select id="hold" required>
-
-<option value="">
-Vælg hold
-</option>
-
-<option>
-Børnehave
-</option>
-
-<option>
-Børnehaveklasse-1. klasse
-</option>
-
-<option>
-2. klasse - 3. klasse
-</option>
-
-</select>
-
-<label>
-Kommentar
-</label>
-
-<textarea
-id="kommentar">
-</textarea>
-
-<div class="payment-box">
-
-MobilePay:
-
-<div class="payment-number">
-
-97575
-
+<div class="modal-backdrop" id="sendingModal">
+  <div class="modal">
+    <div class="spinner"></div>
+    <h2>Sender...</h2>
+    <p>Vent venligst. Luk ikke siden endnu.</p>
+  </div>
 </div>
 
-<button
-type="button"
-class="copy-button"
-id="copyButton">
-
-Kopiér nummer
-
-</button>
-
-<div
-class="copy-status"
-id="copyStatus">
-
-Kopieret
-
-</div>
-
-</div>
-
-<button
-type="submit"
-id="sendButton">
-
-Send tilmelding
-
-</button>
-
-</form>
-
-</div>
-
-<div
-class="modal-backdrop"
-id="sendingModal">
-
-<div class="modal">
-
-<div class="spinner">
-
-</div>
-
-<h2>
-Sender...
-</h2>
-
-</div>
-
-</div>
-
-<div
-class="modal-backdrop"
-id="successModal">
-
-<div class="modal">
-
-<h2>
-
-Tilmelding modtaget
-
-</h2>
-
-<p>
-
-Husk MobilePay:
-97575
-
-</p>
-
-<button
-id="okButton">
-
-OK
-
-</button>
-
-</div>
-
+<div class="modal-backdrop" id="successModal">
+  <div class="modal">
+    <h2>Tilmelding modtaget</h2>
+    <p>Din tilmelding er registreret.</p>
+    <p>Husk at indbetale <strong>300 kr</strong> via MobilePay til <strong>97575</strong>.</p>
+    <button type="button" id="okButton">OK</button>
+  </div>
 </div>
 
 <script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwXfPITCM4jpzttOmUV-9g0dFkqEgGN2EpsRNk8cFgt3h31zgrfF10plUVhRvmTneNC/exec";
 
-const SCRIPT_URL=
-"https://script.google.com/macros/s/AKfycbzfqV2Qtcnru1rb2xQ_k1v3Gka6T7QAVGmrudvWIcPPngKzZa98eZYE37twTdMp69Ei/exec";
+  const form = document.getElementById("tilmeldingForm");
+  const sendButton = document.getElementById("sendButton");
+  const sendingModal = document.getElementById("sendingModal");
+  const successModal = document.getElementById("successModal");
+  const okButton = document.getElementById("okButton");
+  const copyButton = document.getElementById("copyButton");
+  const copyStatus = document.getElementById("copyStatus");
 
-const form=
-document.getElementById(
-"tilmeldingForm"
-);
+  copyButton.addEventListener("click", async function () {
+    try {
+      await navigator.clipboard.writeText("97575");
+      copyStatus.style.display = "block";
+      copyStatus.textContent = "MobilePay-nummer kopieret";
 
-form.addEventListener(
-"submit",
-async function(e){
+      setTimeout(function () {
+        copyStatus.style.display = "none";
+      }, 2500);
 
-e.preventDefault();
+    } catch (err) {
+      copyStatus.style.display = "block";
+      copyStatus.textContent = "Kunne ikke kopiere automatisk. Nummeret er: 97575";
+    }
+  });
 
-document
-.getElementById(
-"sendingModal"
-)
-.style.display="flex";
+  okButton.addEventListener("click", function () {
+    successModal.style.display = "none";
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
 
-const data=
-new URLSearchParams();
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-data.append(
-"barnNavn",
-document.getElementById(
-"barnNavn"
-).value
-);
+    sendButton.disabled = true;
+    sendingModal.style.display = "flex";
 
-data.append(
-"fodselsdato",
-document.getElementById(
-"fodselsdato"
-).value
-);
+    const data = new URLSearchParams();
 
-data.append(
-"foralderNavn",
-document.getElementById(
-"foralderNavn"
-).value
-);
+    data.append("barnNavn", document.getElementById("barnNavn").value.trim());
+    data.append("fodselsdato", document.getElementById("fodselsdato").value);
+    data.append("foralderNavn", document.getElementById("foralderNavn").value.trim());
+    data.append("email", document.getElementById("email").value.trim());
+    data.append("telefon", document.getElementById("telefon").value.trim());
+    data.append("hold", document.getElementById("hold").value);
+    data.append("kommentar", document.getElementById("kommentar").value.trim());
 
-data.append(
-"email",
-document.getElementById(
-"email"
-).value
-);
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: data,
+        mode: "no-cors"
+      });
 
-data.append(
-"telefon",
-document.getElementById(
-"telefon"
-).value
-);
+      form.reset();
+      sendingModal.style.display = "none";
+      successModal.style.display = "flex";
 
-data.append(
-"hold",
-document.getElementById(
-"hold"
-).value
-);
+    } catch (error) {
+      sendingModal.style.display = "none";
+      alert("Der opstod en fejl. Prøv igen.");
+      console.error(error);
+    }
 
-data.append(
-"kommentar",
-document.getElementById(
-"kommentar"
-).value
-);
-
-await fetch(
-SCRIPT_URL,
-{
-method:"POST",
-body:data,
-headers:{
-"Content-Type":
-"application/x-www-form-urlencoded"
-},
-mode:"no-cors"
-}
-);
-
-document
-.getElementById(
-"sendingModal"
-)
-.style.display="none";
-
-document
-.getElementById(
-"successModal"
-)
-.style.display="flex";
-
-form.reset();
-
-});
-
-document
-.getElementById(
-"okButton"
-)
-.onclick=
-function(){
-
-document
-.getElementById(
-"successModal"
-)
-.style.display=
-"none";
-
-};
-
+    sendButton.disabled = false;
+  });
 </script>
 
 </body>
